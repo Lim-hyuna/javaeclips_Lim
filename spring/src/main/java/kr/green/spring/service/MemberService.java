@@ -10,6 +10,8 @@ public interface MemberService {
 
 	MemberVo getMember(MemberVo member);
 
+	MemberVo getMember2(MemberVo member);
+
 	
 
 

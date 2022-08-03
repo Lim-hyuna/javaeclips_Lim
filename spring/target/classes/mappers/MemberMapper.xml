@@ -9,5 +9,8 @@
   <select id="selectMember" resultType="kr.green.spring.vo.MemberVo">
   		select * from member where me_id = #{me_id}
   </select>
+  <select id="selectMember2" resultType="kr.green.spring.vo.MemberVo">
+  		select * from member where me_id = #{member.me_id} and me_pw = #{member.me_pw}
+  </select>
   	
 </mapper>

@@ -39,6 +39,14 @@ public class MemberServiceImp implements MemberService {
 			return dbMember;
 		return null;
 	}
+
+	@Override
+	public MemberVo getMember2(MemberVo member) {
+		if(member == null || member.getMe_id() == null || member.getMe_pw() == null)
+			return null;
+		
+		return memberDao.selectMember2(member);
+	}
 	
 
 		
