@@ -13,39 +13,52 @@ public class MemberServiceImp implements MemberService {
 	MemberDAO memberDao;
 
 	@Override
-	public String getEmail(String me_id) {
-		if(me_id == null) {
-			return null;
-		}
-		return memberDao.selectEmail(me_id);
+	public boolean signup(MemberVo member) {
+		//유효성 검사
+		if(member == null)
+			return false;
+		
+		if(member.getMe_id() == null || member.getMe_id().length() == 0)
+			return false;
+		
+		if(member.getMe_pw() == null || member.getMe_pw().length() == 0)
+			return false;
+		
+		if(member.getMe_email() == null || member.getMe_email().length() == 0)
+			return false;
+		
+		if(member.getMe_gender() != 'M' && member.getMe_gender() != 'F')
+			return false;
+		
+		if(member.getMe_birth() == null)
+			return false;
+		
+		MemberVo bdmember = memberDao.selectMember(member.getMe_id());
+		//이미 가입된 아이디이면 
+		if(bdmember != null)
+			return false;
+	
+		//비밀번호 암호화 
+		
+		memberDao.insertMember(member);
+		return true;
 	}
 
 	@Override
-	public MemberVo getMember(String me_id) {
-		if(me_id == null)
-		return null;
-	  return memberDao.selectMember(me_id);
-	}
-
-	@Override
-	public MemberVo getMember(MemberVo member) {
-		if(member == null || member.getMe_id() == null || member.getMe_pw() == null)
+	public MemberVo login(MemberVo member) {
+		if(member == null || member.getMe_id() == null)
 			return null;
 		
-		MemberVo dbMember = memberDao.selectMember(member.getMe_id());
-		if(dbMember == null)
-			return null;
-		if(dbMember.getMe_pw().equals(member.getMe_pw()))
-			return dbMember;
-		return null;
-	}
-
-	@Override
-	public MemberVo getMember2(MemberVo member) {
-		if(member == null || member.getMe_id() == null || member.getMe_pw() == null)
+		MemberVo dbmember = memberDao.selectMember(member.getMe_id());
+		//가입된 아이디가 아니면
+		if(dbmember == null)
 			return null;
 		
-		return memberDao.selectMember2(member);
+		//아이디, 비번이 일치하는 경우 
+		if(dbmember.getMe_pw().equals(member.getMe_pw()))
+			return dbmember;
+		//아이디는 있지만 비번이 다른 경우 
+		return null;
 	}
 	
 
