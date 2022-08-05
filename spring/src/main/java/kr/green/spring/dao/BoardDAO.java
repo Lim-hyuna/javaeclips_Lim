@@ -12,6 +12,10 @@ public interface BoardDAO {
 
 	ArrayList<BoardVO> selectBoardList();
 
+	void updateViews(@Param("bd_num")Integer bd_num);
+
+	BoardVO selectBoard(@Param("bd_num")Integer bd_num);
+	
 	
 
 
