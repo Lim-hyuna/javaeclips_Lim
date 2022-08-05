@@ -64,5 +64,38 @@ public class BoardController {
 	    mv.setViewName("/board/select");
 	    return mv;
 	}
+	
+	@RequestMapping(value="/board/update/{bd_num}", method=RequestMethod.GET)
+	public ModelAndView boardUpdateGet(ModelAndView mv, @PathVariable("bd_num")Integer bd_num){
+		BoardVO board = boardService.getBoard(bd_num);
+		mv.addObject("board",board);
+	    mv.setViewName("/board/update");
+	    return mv;
+	}
+	@RequestMapping(value="/board/update/{bd_num}", method=RequestMethod.POST)
+	public ModelAndView boardUpdatePost(ModelAndView mv, 
+			@PathVariable("bd_num")Integer bd_num, HttpSession session, BoardVO board){
+			//수정한 게시글 정보를 확인
+			//System.out.println(board);
+			//로그인한 회원 정보를 확인
+			MemberVo user = (MemberVo) session.getAttribute("user");
+			//System.out.println(user);
+			//게시글 수정 요청 	
+			board.setBd_num(bd_num);
+			boardService.updateBoard(board,user);
+	    mv.setViewName("redirect:/board/select/"+bd_num);
+	    return mv;
+	}
+	
+	@RequestMapping(value="/board/delete/{bd_num}", method=RequestMethod.GET)
+	public ModelAndView boardDeleteGet(ModelAndView mv, 
+			@PathVariable("bd_num")Integer bd_num, HttpSession session){
+		MemberVo user = (MemberVo) session.getAttribute("user");
+		boardService.deleteBoard(bd_num,user);
+		
+	    mv.setViewName("redirect:/board/list");
+	    return mv;
+	}
+	
 }
 

@@ -15,4 +15,10 @@ public interface BoardService {
 
 	BoardVO getBoard(Integer bd_num);
 
+	void updateBoard(BoardVO board, MemberVo user);
+
+	void deleteBoard(Integer bd_num, MemberVo user);
+
+	
+
 }
