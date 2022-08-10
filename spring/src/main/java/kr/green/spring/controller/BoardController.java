@@ -90,10 +90,11 @@ public class BoardController {
 	@RequestMapping(value="/board/delete/{bd_num}", method=RequestMethod.GET)
 	public ModelAndView boardDeleteGet(ModelAndView mv, 
 			@PathVariable("bd_num")Integer bd_num, HttpSession session){
+		//System.out.println(bd_num);
 		MemberVo user = (MemberVo) session.getAttribute("user");
-		boardService.deleteBoard(bd_num,user);
-		
-	    mv.setViewName("redirect:/board/list");
+		boardService.deleteBoard(bd_num,user);	
+	    //System.out.println(user);
+		mv.setViewName("redirect:/board/list");
 	    return mv;
 	}
 	

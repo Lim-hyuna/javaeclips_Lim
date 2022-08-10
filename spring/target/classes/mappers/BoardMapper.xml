@@ -20,7 +20,9 @@
  	</select>
  	<update id="updateBoard">
  		update board
- 			set bd_title = #{b.bd_title}, bd_content = #{b.bd_content}, bd_up_date = now()
+ 			set bd_title = #{b.bd_title}, 
+ 			bd_content = #{b.bd_content}, 
+ 			bd_up_date = now()
  			where bd_num = #{b.bd_num}
  	</update>
  	<update id="deleteBoard">
