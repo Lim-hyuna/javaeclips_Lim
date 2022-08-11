@@ -69,7 +69,16 @@ public class MemberServiceImp implements MemberService {
 		return null;
 	}
 	
-
+	@Override
+	public boolean checkId(MemberVo member) {
+		if(member == null || member.getMe_id() == null)
+			return false;
+		
+		MemberVo user = memberDao.selectMember(member.getMe_id());
+		if(user != null)
+			return false;	
+		return true;
+	}
 		
 
 }

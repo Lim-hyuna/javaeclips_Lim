@@ -111,4 +111,9 @@ public class HomeController {
 		map.put("name", "홍길동");
 	    return map;
 	}
+	@RequestMapping(value ="/id/check")
+	@ResponseBody  
+	public boolean idCheck(@RequestBody MemberVo member){
+	    return memberService.checkId(member);
+	}
 }
