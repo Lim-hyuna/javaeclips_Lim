@@ -23,7 +23,11 @@ public interface BoardService {
 
 	int getTotalCount(Criteria cri);
 
-	Object updateLikes(LikesVO likes);
+	String updateLikes(LikesVO likes);
+
+	LikesVO getLikes(BoardVO board, MemberVo user);
+
+	
 
 	
 

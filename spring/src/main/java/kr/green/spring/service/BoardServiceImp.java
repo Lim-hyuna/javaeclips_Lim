@@ -113,7 +113,7 @@ public class BoardServiceImp implements BoardService{
 
 
 	@Override
-	public Object updateLikes(LikesVO likes) {
+	public String updateLikes(LikesVO likes) {
 		if(likes == null)
 			return "";
 		//조회 => 로그인한 사용자가 해당 게시물에 한 추천/비추천 정보를 가져옴 
@@ -145,5 +145,18 @@ public class BoardServiceImp implements BoardService{
 			boardDao.updateBoardLikes(likes.getLi_bd_num());
 		}
 		return "";
+	}
+
+	@Override
+	public LikesVO getLikes(BoardVO board, MemberVo user) {
+		if(board == null || board.getBd_del() != 'N')
+			return null;
+		if(user == null)
+			return null;
+		
+		LikesVO likes = new LikesVO();
+		likes.setLi_bd_num(board.getBd_num());
+		likes.setLi_me_id(user.getMe_id());
+		return boardDao.selectLikes(likes);
 	}
 }

@@ -62,15 +62,20 @@ public class BoardController {
 	}
 	
 	@RequestMapping(value="/board/select/{bd_num}", method=RequestMethod.GET)
-	public ModelAndView boardselectGet(ModelAndView mv, @PathVariable("bd_num")Integer bd_num){
+	public ModelAndView boardselectGet(ModelAndView mv, @PathVariable("bd_num")Integer bd_num, HttpSession session){
 		//System.out.println(bd_num);
 		//게시글 번호에 맞는 게시글 조회수를 증가 
 		boardService.updateViews(bd_num);
 		//게시글 번호에 맞는 게시글 정보를 가져옴 
 		BoardVO board = boardService.getBoard(bd_num);
 		//System.out.println(board);
+		//해당 게시글에 대한 사용자의 추천 정보 => 게시글 번호, 아이디
+		MemberVo user = (MemberVo)session.getAttribute("user");
+		LikesVO likes = boardService.getLikes(board,user);
 		//가져온 게시글을 화면에 전달 
 		mv.addObject("board",board);
+		mv.addObject("likes",likes);
+		//System.out.println(likes);
 	    mv.setViewName("/board/select");
 	    return mv;
 	}
@@ -109,7 +114,7 @@ public class BoardController {
 	}
 	@RequestMapping(value="/board/likes", method=RequestMethod.POST)
 	@ResponseBody
-	public Object boardLikes(@RequestBody LikesVO likes){
+	public String boardLikes(@RequestBody LikesVO likes){
 		//System.out.println(likes);	
 	    return boardService.updateLikes(likes);
 	}
