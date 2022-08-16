@@ -1,9 +1,13 @@
 package kr.green.springtest.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -57,5 +61,13 @@ public class HomeController {
 			session.removeAttribute("user");
 	    mv.setViewName("redirect:/");
 	    return mv;
+		}
+		
+		@RequestMapping(value ="/id/check")
+		public Map<Object,Object> idCheck(@RequestBody MemberVO member){
+			HashMap<Object,Object> map = new HashMap<Object,Object>();
+			//System.out.println(member);
+			map.put("check", memberService.idCheck(member));
+		    return map;
 		}
 	}
