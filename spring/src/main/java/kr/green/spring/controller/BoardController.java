@@ -19,6 +19,7 @@ import kr.green.spring.pagination.Criteria;
 import kr.green.spring.pagination.PageMaker;
 import kr.green.spring.service.BoardService;
 import kr.green.spring.vo.BoardVO;
+import kr.green.spring.vo.CommentVO;
 import kr.green.spring.vo.LikesVO;
 import kr.green.spring.vo.MemberVo;
 
@@ -139,6 +140,33 @@ public class BoardController {
 	    map.put("pm",pm);
 	    return map;
 	}
+	@RequestMapping(value="/ajax/comment/insert", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<Object,Object> ajaxCommentInsert(@RequestBody CommentVO comment, HttpSession session){
+		HashMap<Object,Object> map = new HashMap<Object, Object>();
+		//System.out.println(comment);
+		MemberVo user = (MemberVo)session.getAttribute("user");
+		//System.out.println(user);
+		String res = boardService.insertComment(comment, user);
+		map.put("res", res);
+	    return map;
+	}
+	@RequestMapping(value="/ajax/comment/list/{co_bd_num}", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<Object,Object> ajaxCommentList(@RequestBody Criteria cri, 
+			@PathVariable("co_bd_num")int co_bd_num){
+		HashMap<Object,Object> map = new HashMap<Object, Object>();
+		//System.out.println(cri);
+		//System.out.println(co_bd_num);
+		ArrayList<CommentVO> list = boardService.getCommentList(co_bd_num, cri);
+		
+		int totalCount = boardService.getTotalCountComment(co_bd_num);
+		PageMaker pm = new PageMaker(cri, 5, totalCount);
+		map.put("pm", pm);
+		map.put("list", list);
+	    return map;
+	}
+	
 	
 }
 

@@ -11,6 +11,8 @@ public class Criteria {
 	private int perPageNum; 	//한 페이지 당 컨텐츠 갯수
 	private String search; 		//검색
 	private String searchType;  //검색 타입 : 제목, 작성자, 전체 
+	private String column;
+	private String orderBy;
 
 	/* 쿼리문에서 limit에 사용되는 인덱스를 계산하는 getter */
 	public int getPageStart() {
@@ -21,5 +23,7 @@ public class Criteria {
 		perPageNum = 10;
 		search = "";
 		searchType = "all";
+		column = "bd_num";
+		orderBy = "desc";
 	}
 }
