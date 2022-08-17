@@ -36,8 +36,6 @@
    	</beans:property>
 	</beans:bean>
 	
-
-	
 	<beans:bean id="loginInterceptor" 
 		class="kr.green.springtest.interceptor.LoginInterceptor"></beans:bean>
 	<beans:bean id="memberInterceptor" 
