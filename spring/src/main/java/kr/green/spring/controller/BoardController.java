@@ -166,6 +166,7 @@ public class BoardController {
 		map.put("list", list);
 	    return map;
 	}
+	//댓글 삭제기능
 	@RequestMapping(value="/ajax/comment/delete", method=RequestMethod.POST)
 	@ResponseBody
 	public Map<Object,Object> ajaxCommentDelete(@RequestBody CommentVO comment, HttpSession session){
@@ -174,6 +175,16 @@ public class BoardController {
 		//System.out.println(comment);
 		//System.out.println(user);
 		boolean res = boardService.deleteComment(comment, user);
+		map.put("res", res);
+	    return map;
+	}
+	//댓글 수정 기능
+	@RequestMapping(value="/ajax/comment/update", method=RequestMethod.POST)
+	@ResponseBody
+	public Map<Object,Object> ajaxCommentUpdate(@RequestBody CommentVO comment, HttpSession session){
+		HashMap<Object,Object> map = new HashMap<Object, Object>();
+		MemberVo user = (MemberVo)session.getAttribute("user");
+		boolean res = boardService.updateComment(comment, user);
 		map.put("res", res);
 	    return map;
 	}
