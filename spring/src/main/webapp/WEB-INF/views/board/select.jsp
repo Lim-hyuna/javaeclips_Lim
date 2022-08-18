@@ -137,6 +137,33 @@
 			})
 		})
 		
+		$(function () {
+			$(document).on('click', '.btn-comment-delete',function(){
+				let co_num = $(this).siblings('[name=co_num]').val()
+				//console.log(co_num)
+				let obj = {
+					co_num : co_num
+				}
+				$.ajax({
+			    async: true,
+			    type:'POST',
+			    data: JSON.stringify(obj),
+			    url: '<%=request.getContextPath()%>/ajax/comment/delete',
+			    dataType:"json", 
+			    contentType:"application/json; charset=UTF-8",
+		    	success : function(data){
+		    		//console.log(data)
+		    		if(data.res){
+		    			alert('삭제가 완료됐습니다.');
+		    			getCommentList(criteria, bd_num);
+		    		}else{
+		    			alert('댓글 삭제가 실패했습니다.');
+		    		}
+		    	}
+				})
+			})
+		})
+		
 		function getCommentList(cri, bd_num) {
 			$.ajax({
 		    async: true,
@@ -154,7 +181,13 @@
 							'<div class="co_me_id"><b>'+co.co_me_id+'</b></div>' +
 							'<div class="co_content">'+co.co_content+'</div>' +
 							'<div class="co_reg_date">'+co.co_reg_date_str+'</div>' +
-							'<input value="'+co.co_num+'" name="co_num" type="hidden">' +
+							'<input value="'+co.co_num+'" name="co_num" type="hidden">';
+							//본인이 쓴 댓글에만 삭제버튼이 보이도록 설정
+							if(co.co_me_id == '${user.me_id}'){
+								str +=
+							'<button class="btn-comment-delete">삭제</button>';
+							}
+						str +=
 						'</div>'
 		    	}
 		    	$('.list-comment').html(str);
@@ -164,20 +197,20 @@
 		       	if(pm.prev){
 		       		pmStr +=
 		         	'<li class="page-item">' +
-		         		'<a class="page-link" href="javascript:0;" onclick="criteria.page='+(pm.startPage-1)+';getBoardList(criteria, bd_num)">이전</a>' +
+		         		'<a class="page-link" href="javascript:0;" onclick="criteria.page='+(pm.startPage-1)+';getCommentList(criteria, bd_num)">이전</a>' +
 		         	'</li>';
 		       	}
 		         for(let i = pm.startPage; i<=pm.endPage; i++){
 		       	  let active = pm.cri.page == i ? 'active' : '';
 		       	  pmStr +=
 		         	'<li class="page-item '+active+'">'+
-		         		'<a class="page-link" href="javascript:0;" onclick="criteria.page='+(i)+';getBoardList(criteria, bd_num)">'+ i +'</a>'+
+		         		'<a class="page-link" href="javascript:0;" onclick="criteria.page='+(i)+';getCommentList(criteria, bd_num)">'+ i +'</a>'+
 		         	'</li>';
 		         }
 		         if(pm.next){
 		       	  pmStr +=
 		         	'<li class="page-item">' + 
-		         		'<a class="page-link" href="javascript:0;" onclick="criteria.page='+(pm.endPage+1)+';getBoardList(criteria, bd_num)">다음</a>' + 
+		         		'<a class="page-link" href="javascript:0;" onclick="criteria.page='+(pm.endPage+1)+';getCommentList(criteria, bd_num)">다음</a>' + 
 		         	'</li>';
 		         }
 		         $('.pagination').html(pmStr);
@@ -185,6 +218,8 @@
 		  });
 		}
 		getCommentList(criteria, bd_num)
+		
+		
 	</script>
 </body>
 </html>
