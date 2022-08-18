@@ -47,6 +47,8 @@ public interface BoardDAO {
 
 	void updateBoardOrder(@Param("bo")BoardVO board);
 
+	void updateCommentOrder(@Param("co")CommentVO comment);
+
 
 	
 
