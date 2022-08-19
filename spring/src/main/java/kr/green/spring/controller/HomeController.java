@@ -122,4 +122,22 @@ public class HomeController {
 	public boolean idCheck(@RequestBody MemberVo member){
 	    return memberService.checkId(member);
 	}
+	
+	@RequestMapping(value="/find", method=RequestMethod.GET)
+	public ModelAndView logoutGet(ModelAndView mv, String type){
+		//System.out.println(type);
+		mv.addObject("type", type);
+	    mv.setViewName("/main/find");
+	    return mv;
+	}
+	
+	@RequestMapping(value ="/find/id", method=RequestMethod.POST)
+	@ResponseBody  
+	public Map<Object, Object> findId(@RequestBody MemberVo member){
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		//System.out.println(member);
+		ArrayList<String> idList = memberService.getIdList(member);
+		map.put("idList", idList);
+	    return map;
+	}
 }
