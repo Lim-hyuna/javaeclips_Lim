@@ -18,5 +18,7 @@ public interface MemberService {
 
 	boolean findPw(MemberVo member);
 
+	void updateMember(MemberVo member, MemberVo user);
+
 	
 }
