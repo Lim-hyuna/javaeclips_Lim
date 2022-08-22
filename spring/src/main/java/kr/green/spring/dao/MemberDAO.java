@@ -14,5 +14,9 @@ public interface MemberDAO {
 
 	ArrayList<String> selectIdList(@Param("m")MemberVo member);
 
+	MemberVo selectMemberByEmailBirth(@Param("m")MemberVo member);
+
+	void updateMember(@Param("m")MemberVo dbmember);
+
 
 }
