@@ -1,7 +1,6 @@
 package kr.green.spring.service;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
 
@@ -109,7 +108,7 @@ public class MemberServiceImp implements MemberService {
 	        messageHelper.setFrom(setfrom);  // 보내는사람 생략하거나 하면 정상작동을 안함
 	        messageHelper.setTo(email);     // 받는사람 이메일
 	        messageHelper.setSubject(title); // 메일제목은 생략이 가능하다
-	        messageHelper.setText(content);  // 메일 내용
+	        messageHelper.setText(content, true);  // 메일 내용
 
 	        mailSender.send(message);
 	    } catch(Exception e){
