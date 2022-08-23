@@ -132,8 +132,23 @@ public class BoardController {
 	public Map<Object,Object> ajaxCommentInsert(
 			@RequestBody Criteria cri, @PathVariable("bd_num") int bd_num){
 		HashMap<Object, Object> map = new HashMap<Object, Object>();
-		System.out.println(bd_num);
-		System.out.println(cri);
+		//System.out.println(bd_num);
+		//System.out.println(cri);
+		ArrayList<CommentVO> list = boardService.getCommentList(bd_num, cri);
+		int totalCount = boardService.getCommentTotalCount(bd_num);
+		PageMaker pm = new PageMaker(totalCount, 5, cri);
+		map.put("pm", pm);
+		map.put("list", list);
+		return map;
+	}
+	@RequestMapping(value="/ajax/comment/delete")
+	@ResponseBody
+	public Map<Object,Object> ajaxCommentDelete(
+			@RequestBody CommentVO comment, HttpSession session){
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		System.out.println(user);
+		System.out.println(comment);
 		return map;
 	}
 	
