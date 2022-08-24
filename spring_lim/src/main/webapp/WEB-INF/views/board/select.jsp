@@ -209,6 +209,7 @@
 			}
 			//댓글들을 화면에 출력
 			$('.list-comment').html(str);
+			//댓글 삭제버튼 이벤트 등록 
 			$('.btn-co-delete').click(function(){
 				let co_num = $(this).data('target');
 				let comment = {
@@ -242,7 +243,12 @@
 			console.log(data);
 		}
 		function commentDeleteSuccess(data){
-			console.log(data);
+			if(data.res){
+				alert('댓글 삭제가 완료됐습니다.');
+			}else{
+				alert('댓글 삭제가 실패했습니다.');
+			}
+			getCommentList(cri);
 		}
 		
 		function ajaxPost(async, dataObj, url, success){
