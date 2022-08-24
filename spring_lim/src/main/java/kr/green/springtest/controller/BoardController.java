@@ -153,6 +153,18 @@ public class BoardController {
 		map.put("res", res);
 		return map;
 	}
+	@RequestMapping(value="/ajax/comment/update")
+	@ResponseBody
+	public Map<Object,Object> ajaxCommentUpdate(
+			@RequestBody CommentVO comment, HttpSession session){
+		HashMap<Object, Object> map = new HashMap<Object, Object>();
+		MemberVO user = (MemberVO)session.getAttribute("user");
+		//System.out.println(comment);
+		//System.out.println(user);
+		boolean res = boardService.updateComment(comment, user);
+		map.put("res", res);
+		return map;
+	}
 	
 	
 	
