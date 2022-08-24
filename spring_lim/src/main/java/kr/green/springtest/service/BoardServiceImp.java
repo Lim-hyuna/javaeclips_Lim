@@ -176,6 +176,6 @@ public class BoardServiceImp implements BoardService{
 		if(bdComment == null || !bdComment.getCo_me_id().equals(user.getMe_id()))
 			return false;
 		boardDao.updateComment(comment);
-		return false;
+		return true;
 	}
 }

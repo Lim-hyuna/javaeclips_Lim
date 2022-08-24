@@ -58,7 +58,10 @@
 				<div class="media border p-3">
 			    <div class="media-body">
 			      <h4>John Doe <small><i>February 19, 2016</i></small></h4>
-			      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>      
+			      <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p> -->
+			      <div class="form-group">      
+			      	<textarea class="form-control" rows="" cols=""></textarea>
+			      </div>
 			    </div>
 			    <div class="btn-box">
 			    	<button class="btn btn-outline-danger" style="display: block">수정</button>
@@ -189,6 +192,22 @@
 			getCommentList(cri);
 			$('[name=co_content]').val('');
 		}
+		function commentDeleteSuccess(data){
+			if(data.res){
+				alert('댓글 삭제가 완료됐습니다.');
+			}else{
+				alert('댓글 삭제에 실패했습니다.');
+			}
+			getCommentList(cri);
+		}
+		function commentUpdateSuccess(data){
+			if(data.res){
+				alert('댓글 수정 완료됐습니다.');
+			}else{
+				alert('댓글 수정에 실패했습니다.');
+			}
+			getCommentList(cri);
+		}
 		function commentListSuccess(data){
 			let list = data.list;
 			let str = '';
@@ -209,7 +228,7 @@
 			}
 			//댓글들을 화면에 출력
 			$('.list-comment').html(str);
-			//댓글 삭제버튼 이벤트 등록 
+			//댓글 삭제버튼 이벤트 등록
 			$('.btn-co-delete').click(function(){
 				let co_num = $(this).data('target');
 				let comment = {
@@ -217,23 +236,23 @@
 				}
 				ajaxPost(false, comment, '/ajax/comment/delete', commentDeleteSuccess)
 			});
-			//댓글 수정버튼 클릭 이벤트 등록 
+			//댓글 수정버튼 클릭 이벤트 등록
 			$('.btn-co-update').click(function(){
 				$('.btn-co-cancel').click();
 				let contentEl = $(this).parent().siblings('.media-body').children('p');
 				contentEl.hide();
 				let content = contentEl.text();
 				let str = '';
-				str += '<div class="form-group box-content">'
-				str +=    '<textarea class="form-control" row="3">'+content+'</textarea>'
+				str += '<div class="form-group box-content">'      
+				str +=  	'<textarea class="form-control" rows="3">'+content+'</textarea>'
 				str += '</div>'
 				contentEl.after(str);
 				$(this).parent().hide();
 				let co_num = $(this).data('target');
-				str += '';
+				str = '';
 				str += '<div class="btn-box2">'
-			  str += 	'<button data-target="'+co_num+'" class="btn btn-outline-danger btn-co-complete" style="display: block">등록</button>';
-				str += 	'<button class="btn btn-outline-success btn-co-cancel mt-1" style="display: block">취소</button>';
+				str +=	 	'<button data-target="'+co_num+'" class="btn btn-outline-danger btn-co-complete" style="display: block">등록</button>';
+				str +=   	'<button class="btn btn-outline-success btn-co-cancel mt-1" style="display: block">취소</button>';
 				str += '</div>'
 				$(this).parent().after(str);
 				//등록버튼 클릭
@@ -241,21 +260,20 @@
 					let co_num = $(this).data('target');
 					let co_content = $(this).parent().siblings('.media-body').find('textarea').val();
 					let obj = {
-							co_num : co_num
+							co_num : co_num,
 							co_content : co_content
 					}
-					//console.log(obj)
 					ajaxPost(false, obj, '/ajax/comment/update', commentUpdateSuccess)
 				})
-				//취소버튼 클릭 
+				//취소버튼 클릭
 				$('.btn-co-cancel').click(function(){
-					//.box-content
 					$(this).parent().siblings('.media-body').find('p').show();
 					$(this).parent().siblings('.media-body').find('.box-content').remove();
 					$(this).parent().siblings('.btn-box').show();
 					$(this).parent().remove();
 				})
 			})
+			
 			let pm = data.pm;
 			let pmStr = '';
 			//댓글 페이지네이션 구성
@@ -277,22 +295,7 @@
 			  getCommentList(cri);
 		  })
 		}
-		function commentUpdateSuccess(data){
-			if(data.res){
-				alert('댓글 수정 완료됐습니다.');
-			}else{
-				alert('댓글 수정에 실패했습니다.');
-			}
-			getCommentList(cri);
-		}
-		function commentDeleteSuccess(data){
-			if(data.res){
-				alert('댓글 삭제가 완료됐습니다.');
-			}else{
-				alert('댓글 삭제가 실패했습니다.');
-			}
-			getCommentList(cri);
-		}
+		
 		
 		function ajaxPost(async, dataObj, url, success){
 			$.ajax({

@@ -3,6 +3,7 @@ package kr.green.springtest.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +44,13 @@ public class HomeController {
 	    return mv;
 		}
 		@RequestMapping(value="/login", method=RequestMethod.GET)
-		public ModelAndView loginGet(ModelAndView mv){
-	    mv.setViewName("/main/login");
-	    return mv;
+		public ModelAndView loginGet(ModelAndView mv, HttpServletRequest request){
+			String url = request.getHeader("Refere");
+			if(url != null && url.contains("/login")) {
+				request.getSession().setAttribute("prevURL",url);
+			}
+			mv.setViewName("/main/login");
+			return mv;
 		}
 		@RequestMapping(value="/login", method=RequestMethod.POST)
 		public ModelAndView loginPost(ModelAndView mv, MemberVO member){
