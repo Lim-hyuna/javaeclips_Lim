@@ -9,4 +9,11 @@ public interface MemberService {
 	public MemberVO login(MemberVO member);
 
 	public Object idCheck(MemberVO member);
+
+	public String getId(MemberVO member);
+
+	public boolean findPw(MemberVO member);
+
+	public boolean updateMember(MemberVO member, MemberVO user);
+	
 }
