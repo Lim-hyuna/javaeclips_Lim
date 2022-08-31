@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 <style>
 .delete{
 	font-size : 30px; height : 21px; vertical-align : top;
@@ -57,6 +59,11 @@
 			$(this).parents('.form-group').append(str2);
 			$(this).parent().remove();
 		})
+	  $('#bd_content').summernote({
+		    placeholder: 'Hello Bootstrap 4',
+		    tabsize: 2,
+		    height: 400
+	  });
 	})
 </script>
 </body>

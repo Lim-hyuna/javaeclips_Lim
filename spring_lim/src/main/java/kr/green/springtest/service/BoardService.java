@@ -42,5 +42,7 @@ public interface BoardService {
 	boolean updateComment(CommentVO comment, MemberVO user);
 
 	ArrayList<FileVO> getFileList(int bd_num);
+
+	String uploadImg(MultipartFile file);
 	
 }
