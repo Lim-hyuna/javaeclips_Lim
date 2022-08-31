@@ -1,14 +1,20 @@
 package kr.green.spring.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.WebUtils;
 
 import kr.green.spring.dao.MemberDAO;
 import kr.green.spring.vo.MemberVo;
@@ -69,7 +75,7 @@ public class MemberServiceImp implements MemberService {
 		//가입된 아이디가 아니면
 		if(dbmember == null)
 			return null;
-		
+		dbmember.setAutoLogin(member.isAutoLogin());
 		//아이디, 비번이 일치하는 경우 
 		//matches(암호화안된 비번, 암호화된비번)
 		if(passwordEncoder.matches(member.getMe_pw(), dbmember.getMe_pw()))
@@ -184,6 +190,73 @@ public class MemberServiceImp implements MemberService {
 			user.setMe_pw(encpw);
 		}
 		memberDao.updateMember(user);
+	}
+
+	@Override
+	public void keepLogin(String me_id, String me_session_id, Date me_session_limit) {
+		if(me_id == null || me_session_id == null || me_session_limit == null)
+			return;
+		memberDao.updateMemberSession(me_id, me_session_id, me_session_limit);
+	}
+
+	@Override
+	public MemberVo autoLogin(String session_id) {
+		if(session_id == null)
+			return null;
+		return memberDao.selectMemberBySession(session_id);
+	}
+	@Override
+	public void logout(HttpServletRequest request, HttpServletResponse response) {
+		if(request == null)
+			return;
+		HttpSession session = request.getSession();
+		
+		MemberVo user = (MemberVo)session.getAttribute("user");
+		if(user == null)
+			return;
+		session.removeAttribute("user");
+		
+		if(response == null)
+			return;
+		
+		Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");
+		if(loginCookie == null)
+			return; 
+		loginCookie.setPath("/");
+		loginCookie.setMaxAge(0);
+		response.addCookie(loginCookie);
+		keepLogin(user.getMe_id(), null, null);
+	}
+
+	@Override
+	public ArrayList<MemberVo> getMemberList(MemberVo user) {
+		if(user == null)
+			return null;
+		if(user.getMe_authority() < 8)
+			return null;
+		return memberDao.selectMemberList(user.getMe_authority());
+	}
+
+	@Override
+	public boolean updateAuthority(MemberVo member, MemberVo user) {
+		if(member == null || user == null)
+			return false;
+		//화면에서 권한 숫자를 수정하여 접근한 경우를 처리
+		if(member.getMe_authority() >= user.getMe_authority())
+			return false;
+		
+		MemberVo dbmember = memberDao.selectMember(member.getMe_id());
+		//화면에서 아이디를 수정하여 접근한 경우를 처리
+		if(dbmember == null || dbmember.getMe_authority() >= user.getMe_authority())
+			return false;
+		
+		//접근 권한이 없는 회원이 접근한 경우를 처리(혹시나)
+		if(user.getMe_authority() < 8) 
+			return false;
+		
+		dbmember.setMe_authority(member.getMe_authority());
+		memberDao.updateMember(dbmember);	
+		return true;
 	}
 	
 	

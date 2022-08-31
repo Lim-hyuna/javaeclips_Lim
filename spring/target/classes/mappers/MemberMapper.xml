@@ -25,4 +25,16 @@
   		me_authority = #{m.me_authority}
   	where me_id = #{m.me_id}
   </update>
+  <update id="updateMemberSession">
+  	update member set
+  		me_session_id = #{me_session_id},
+  		me_session_limit = #{me_session_limit}
+  	where me_id = #{me_id}
+  </update>
+  <select id="selectMemberBySession" resultType="kr.green.spring.vo.MemberVo">
+  	select * from member where me_session_id = #{session_id} and me_session_limit > now()
+  </select>
+  <select id="selectMemberList" resultType="kr.green.spring.vo.MemberVo">
+ 	 	<![CDATA[select * from member where me_authority < ]]> #{me_authority}
+  </select>
 </mapper>
