@@ -1,0 +1,34 @@
+package kr.green.alba.service;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import kr.green.alba.vo.MemberVO;
+
+public interface MemberService {
+
+	public boolean signup(MemberVO member);
+
+	public MemberVO login(MemberVO member);
+
+	public Object idCheck(MemberVO member);
+
+	public String getId(MemberVO member);
+
+	public boolean findPw(MemberVO member);
+
+	public boolean updateMember(MemberVO member, MemberVO user);
+
+	public void updateMemberSession(String me_id, String id, Date session_limit);
+
+	public MemberVO getMember(String session_id);
+
+	public void logout(HttpServletRequest request, HttpServletResponse response);
+
+	public ArrayList<MemberVO> getMemberList(MemberVO user);
+
+	public boolean updateMemberAuthority(MemberVO member, MemberVO user);
+}
